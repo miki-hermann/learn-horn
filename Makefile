@@ -1,6 +1,6 @@
-.PHONY: compile offline online horn-closure install clean scratch
+.PHONY: compile offline online horn-closure install clean scratch example
 
-compile: offline online horn-closure
+compile: offline online horn-closure example
 
 offline: matrix+formula.o common.o offline.o
 	g++ -O4 -o offline offline.o common.o matrix+formula.o
@@ -26,14 +26,19 @@ common.o: common.hpp common.cpp
 matrix+formula.o: matrix+formula.hpp matrix+formula.cpp
 	g++ -O4 -c -o matrix+formula.o matrix+formula.cpp
 
+example: digit.cpp digit.csv.xz
+	g++ -O4 -o digit digit.cpp
+
 clean:
 	rm -f *.o
 	rm -f *~
 
 scratch: clean
-	rm -f offline online hc-miki horn-closure
-	rm -f train[0-9].csv
+	rm -f offline online hc-miki horn-closure digit
+	rm -f digit[0-9].csv
 
 install:
 	sudo mkdir -p /usr/local/bin
 	sudo cp -f offline online /usr/local/bin
+	sudo cp -f horn-closure /usr/localbin
+	sudo cp -f digit /usr/local/bin
