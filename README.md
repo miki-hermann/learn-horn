@@ -19,6 +19,9 @@ integer values separated by commas, preceded by an indicator (first
 value on the line). The leading indicator is 0 for a negative example
 and 1 for a positive example.
 
+Detailed description of the algorithms together with the syntax of
+produced formulas is in the file `paper.pdf`.
+
 ### Invocation
 
 Both offline and online algorithms are invoked by the following
