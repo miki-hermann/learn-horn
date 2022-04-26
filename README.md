@@ -37,7 +37,7 @@ and
 Both algorithms also accept the input from from STDIN and print the
 output on STDOUT by default, if the options `-i` or `-o` are not
 specified. If the user requires output in LaTeX form, it can be done
-using the `-l` option followed by the filename. The option `-c`
+using the `-l` option followed by the target filename. The option `-c`
 specifies the domain cardinality, but it is necessary only for the
 online version.
 
