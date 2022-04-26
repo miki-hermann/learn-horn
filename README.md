@@ -44,7 +44,7 @@ online version.
 
 ### Compilation
 
-A C++ compiler satisfying at least the C++17 revision is necessary to
+A C++ compiler satisfying at least the C++11 revision is necessary to
 successfully compile the algorithms. Only the standard library is
 used, therefore there is no need to install any additional C++
 libraries.  The g++ GNU Project compiler is used in the `Makefile`. If
@@ -81,7 +81,7 @@ present, but it needs some preprocessing. The file `train.csv.xz`
 contains compressed data for recognition of digits. Start the Perl
 script `train.pl` and choose the digit `d` which you want to
 recognize. The script produces a CSV file `traind.csv` for the chosen
-digit `d`. Use it as input for the algorithm.
+digit `d`. Use it as input for the algorithms.
 
 
 EOF
