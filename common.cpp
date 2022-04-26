@@ -39,7 +39,17 @@ void read_arg (int argc, char *argv[]) {	// reads the input parameters
     else if (arg == "--card"
 	     || arg == "-c")
       DCARD = stoi(argv[++argument]);
-    else if (arg == "--print"
+    else if (arg == "--help"
+	     || arg == "-h") {
+      cerr << "Usage: " << argv[0]
+	   << " [-i <input file>]"
+	   << " [-o <output file>]"
+	   << " [-l <latex-output-file>]"
+	   << " [-c <domain cardinality>]"
+	   << " [-p <print indicator>"
+	   << endl;
+      exit(0);
+    } else if (arg == "--print"
 	     || arg == "-p") {
       string prt = argv[++argument];
       if (prt == "clause"
