@@ -53,7 +53,7 @@ int main (int argc, char **argv) {
   infile.close();
   outfile.close();
   system("rm -f digit.csv");
-  cerr << "CSV file $filename generated" << endl;
+  cerr << "CSV file " << filename << " generated" << endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
