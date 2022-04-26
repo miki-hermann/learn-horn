@@ -77,10 +77,10 @@ algorithms run correctly and also serve as examples how to write the
 input.
 
 There is another, much more sophisticated example from `kaggle`
-present, but it needs some preprocessing. The file `train.csv.xz`
+present, but it needs some preprocessing. The file `digit.csv.xz`
 contains compressed data for recognition of digits. Start the Perl
-script `train.pl` and choose the digit `d` which you want to
-recognize. The script produces a CSV file `traind.csv` for the chosen
+script `digit.pl` and choose the digit `d` which you want to
+recognize. The script produces a CSV file `digitd.csv` for the chosen
 digit `d`. Use it as input for the algorithms.
 
 
