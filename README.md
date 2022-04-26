@@ -81,10 +81,12 @@ input.
 
 There is another, much more sophisticated example from `kaggle`
 present, but it needs some preprocessing. The file `digit.csv.xz`
-contains compressed data for recognition of digits. Start the Perl
-script `digit.pl` and choose the digit `d` which you want to
-recognize. The script produces a CSV file `digitd.csv` for the chosen
-digit `d`. Use it as input for the algorithms.
+contains compressed data for recognition of digits.
+
+Compile the digit treatment by `make example`, then run the command
+`digit`. This command will ask you to choose the digit `d` which you
+want to recognize. The software produces a CSV file `digitd.csv` for
+the chosen digit `d`. Use it as input for the algorithms.
 
 
 EOF
