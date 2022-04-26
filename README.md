@@ -24,12 +24,12 @@ and 1 for a positive example.
 Both offline and online algorithms are invoked by the following
 commands:
 
-	offline [-i <input file>] [-o <output file>] [-l <latex-output-file>]
+	offline      [-i <input file>] [-o <output file>] [-l <latex-output-file>]
 	horn-closure [-i <input file>] [-o <output file>]
 
 and
 
-	online -c <domain cardinality [-i <input file>] [-o <output file>] [-l <latex-output-file>]
+	online -c <domain cardinality> [-i <input file>] [-o <output file>] [-l <latex-output-file>]
 
 Both algorithms also accept the input from from STDIN and print the
 output on STDOUT by default, if the options `-i` or `-o` are not
