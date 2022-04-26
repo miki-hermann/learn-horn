@@ -7,7 +7,6 @@
 
 using namespace std;
 
-const char delim = ',';
 ifstream infile;
 ofstream outfile;
 
