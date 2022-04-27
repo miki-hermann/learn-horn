@@ -68,7 +68,8 @@ Formula learn_horn_formula () {
 
 int main (int argc, char **argv) {
   read_arg(argc, argv);
-  adjust_and_open();
+  string command = argv[0];
+  adjust_and_open(command);
   read_input();
   Formula varphi = learn_horn_formula();
   cout << to_string(varphi) << endl;

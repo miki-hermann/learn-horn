@@ -12,7 +12,7 @@ Matrix negativeF;	// negative examples
 
 string varid = "x";	// variable prefix
 char delim   = ',';	// delimiter
-int DCARD    = 2;	// domain cardinality
+int DCARD    = 0;	// domain cardinality
 Print print  = pCLAUSE;	// formula print indicator
 int arity    = 0;	// arity of rows
 

@@ -46,7 +46,8 @@ Matrix horn_closure (const Matrix &M) {	// Horn closure of a matrix
 
 int main (int argc, char **argv) {
   read_arg(argc, argv);
-  adjust_and_open();
+  string command = argv[0];
+  adjust_and_open(command);
   read_input();
   Matrix HCpos = horn_closure(positiveT);
   cout << "+++ Horn closure of positive examples" << endl;

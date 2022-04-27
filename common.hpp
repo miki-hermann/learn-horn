@@ -22,7 +22,7 @@ extern ofstream latexfile;
 //--------------------------------------------------------------------------------------------------
 
 void read_arg (int argc, char *argv[]);
-void adjust_and_open ();
+void adjust_and_open (string &command);
 Row min (const Row &a, const Row &b);
 bool operator|= (const Matrix &T, const Clause &c);
 bool in_horn_closure (const Row &f, const Matrix &T);

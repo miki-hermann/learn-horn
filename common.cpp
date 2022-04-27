@@ -46,7 +46,7 @@ void read_arg (int argc, char *argv[]) {	// reads the input parameters
 	   << " [-o <output file>]"
 	   << " [-l <latex-output-file>]"
 	   << " [-c <domain cardinality>]"
-	   << " [-p <print indicator>"
+	   << " [-p <print indicator>]"
 	   << endl;
       exit(0);
     } else if (arg == "--print"
@@ -69,7 +69,7 @@ void read_arg (int argc, char *argv[]) {	// reads the input parameters
   }
 }
 
-void adjust_and_open () {		// adjust input parameters
+void adjust_and_open (string &command) {	// adjust input parameters
   if (input != STDIN) {
     infile.open(input);
     if (infile.is_open())
@@ -102,8 +102,8 @@ void adjust_and_open () {		// adjust input parameters
     }
   }
 
-  if (DCARD < 2) {
-    cerr << "+++ domain cardinality cannot be smaller than 2" << endl;
+  if (command == "online" && DCARD < 2) {
+    cerr << "+++ domain cardinality cannot be unspecified or smaller than 2" << endl;
     exit(1);
   }
 }
