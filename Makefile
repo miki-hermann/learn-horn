@@ -43,5 +43,5 @@ scratch: clean
 install:
 	sudo mkdir -p /usr/local/bin
 	sudo cp -f offline online /usr/local/bin
-	sudo cp -f horn-closure /usr/localbin
+	sudo cp -f horn-closure-v1 horn-closure-v2 /usr/localbin
 	sudo cp -f digit /usr/local/bin

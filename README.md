@@ -24,22 +24,26 @@ produced formulas is in the file `paper.pdf`.
 
 ### Invocation
 
-Both offline and online algorithms are invoked by the following
-commands:
+Both offline, online, and Horn closure algorithms are invoked by the
+following commands:
 
 	offline      [-i <input file>] [-o <output file>] [-l <latex-output-file>]
-	horn-closure [-i <input file>] [-o <output file>]
+	horn-closure-v1 [-i <input file>] [-o <output file>]
+	horn-closure-v2 [-i <input file>] [-o <output file>]
 
 and
 
 	online -c <domain cardinality> [-i <input file>] [-o <output file>] [-l <latex-output-file>]
 
-Both algorithms also accept the input from from STDIN and print the
-output on STDOUT by default, if the options `-i` or `-o` are not
-specified. If the user requires output in LaTeX form, it can be done
-using the `-l` option followed by the target filename. The option `-c`
-specifies the domain cardinality, but it is necessary only for the
-online version.
+Both offline and online algorithms also accept the input from from
+STDIN and print the output on STDOUT by default, if the options `-i`
+or `-o` are not specified. If the user requires output in LaTeX form,
+it can be done using the `-l` option followed by the target
+filename. The option `-c` specifies the domain cardinality, but it is
+necessary only for the online version.
+
+There exist two versions of the Horn closure algorithm. The actual
+algorithm described in the paper is the version horn-closure-v2.
 
 ## Compilation and Installation
 * [Compilation](#compilation)
