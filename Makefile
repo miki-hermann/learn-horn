@@ -15,10 +15,12 @@ online.o: matrix+formula.hpp common.hpp online.cpp
 	g++ -O4 -c -o online.o online.cpp
 
 horn-closure: matrix+formula.o common.o horn-closure.o
-	g++ -O4 -o horn-closure horn-closure.o common.o matrix+formula.o
+	g++ -O4 -o horn-closure-v1 horn-closure-v1.o common.o matrix+formula.o
+	g++ -O4 -o horn-closure-v2 horn-closure-v2.o common.o matrix+formula.o
 
-horn-closure.o: matrix+formula.hpp common.hpp horn-closure.cpp
-	g++ -O4 -c -o horn-closure.o horn-closure.cpp
+horn-closure.o: matrix+formula.hpp common.hpp horn-closure-v1.cpp  horn-closure-v2.cpp
+	g++ -O4 -c -o horn-closure-v1.o horn-closure-v1.cpp
+	g++ -O4 -c -o horn-closure-v2.o horn-closure-v2.cpp
 
 common.o: common.hpp common.cpp
 	g++ -O4 -c -o common.o common.cpp
