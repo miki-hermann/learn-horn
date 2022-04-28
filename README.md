@@ -27,7 +27,7 @@ produced formulas is in the file `paper.pdf`.
 Both offline, online, and Horn closure algorithms are invoked by the
 following commands:
 
-	offline      [-i <input file>] [-o <output file>] [-l <latex-output-file>]
+	offline         [-i <input file>] [-o <output file>] [-l <latex-output-file>]
 	horn-closure-v1 [-i <input file>] [-o <output file>]
 	horn-closure-v2 [-i <input file>] [-o <output file>]
 
