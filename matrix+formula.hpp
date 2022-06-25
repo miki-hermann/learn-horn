@@ -17,7 +17,7 @@ enum Sign {lnone = 0, lneg = 1, lpos = 2, lboth = 3};
 class Literal {	// variable <= nval or variable >= pval
 public:
   Sign sign;
-  int pval, nval;
+  unsigned pval, nval;
 
   Literal() = default;
   ~Literal () = default;
