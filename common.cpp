@@ -34,7 +34,8 @@ void read_arg (int argc, char *argv[]) {	// reads the input parameters
     else if (arg == "--output"
 	     || arg == "-o")
       output = argv[++argument];
-    else if (arg == "--latex")
+    else if (arg == "--latex"
+	     || arg == "-l")
       latex = argv[++argument];
     else if (arg == "--card"
 	     || arg == "-c")

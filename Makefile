@@ -38,6 +38,7 @@ clean:
 scratch: clean
 	rm -f offline online
 	rm -f horn-closure-v1 horn-closure-v2
+	rm -f *.tex
 	rm -f digit digit[0-9].csv
 
 install:
