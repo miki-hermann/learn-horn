@@ -103,7 +103,7 @@ void adjust_and_open (string &command) {	// adjust input parameters
     }
   }
 
-  if (command == "online" && DCARD < 2) {
+  if (command.substr(0,6) == "online" && DCARD < 2) {
     cerr << "+++ domain cardinality cannot be unspecified or smaller than 2" << endl;
     exit(1);
   }
