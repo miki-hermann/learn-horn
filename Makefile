@@ -3,13 +3,13 @@
 compile: offline online horn-closure example
 
 offline: matrix+formula.o common.o offline.o
-	g++ -O4 -o offline offline.o common.o matrix+formula.o
+	g++ -O4 -o offline-horn offline.o common.o matrix+formula.o
 
 offline.o: matrix+formula.hpp common.hpp offline.cpp
 	g++ -O4 -c -o offline.o offline.cpp
 
 online: matrix+formula.o common.o online.o
-	g++ -O4 -o online online.o common.o matrix+formula.o
+	g++ -O4 -o online-horn online.o common.o matrix+formula.o
 
 online.o: matrix+formula.hpp common.hpp online.cpp
 	g++ -O4 -c -o online.o online.cpp
@@ -36,13 +36,13 @@ clean:
 	rm -f *~
 
 scratch: clean
-	rm -f offline online
+	rm -f offline-horn online-horn
 	rm -f horn-closure-v1 horn-closure-v2
 	rm -f *.tex
 	rm -f digit digit[0-9].csv
 
 install:
 	sudo mkdir -p /usr/local/bin
-	sudo cp -f offline online /usr/local/bin
+	sudo cp -f offline-horn online-horn /usr/local/bin
 	sudo cp -f horn-closure-v1 horn-closure-v2 /usr/localbin
 	sudo cp -f digit /usr/local/bin

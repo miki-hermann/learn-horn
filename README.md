@@ -27,13 +27,13 @@ produced formulas is in the file `paper.pdf`.
 Both offline, online, and Horn closure algorithms are invoked by the
 following commands:
 
-	offline         [-i <input file>] [-o <output file>] [-l <latex-output-file>]
+	offline-horn    [-i <input file>] [-o <output file>] [-l <latex-output-file>]
 	horn-closure-v1 [-i <input file>] [-o <output file>]
 	horn-closure-v2 [-i <input file>] [-o <output file>]
 
 and
 
-	online -c <domain cardinality> [-i <input file>] [-o <output file>] [-l <latex-output-file>]
+	online-horn -c <domain cardinality> [-i <input file>] [-o <output file>] [-l <latex-output-file>]
 
 Both offline and online algorithms also accept the input from from
 STDIN and print the output on STDOUT by default, if the options `-i`
