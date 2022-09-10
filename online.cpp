@@ -30,10 +30,8 @@ void learn_negative (Row &f, Formula &varphi) {
   for (Row t : positiveT)
     if (t >= f)
       guard[f] = min(t, guard[f]);
-  if (guard[f] == f) {
-    cerr << "+++ negative example present in Horn closure of T" << endl;
-    throw;
-  }
+  if (guard[f] == f)
+    throw runtime_error("+++ negative example present in Horn closure of T");
   Clause c;
   for (int i = 0; i < arity; ++i) {
     Sign sign = f[i] > 0 ? lneg : lnone;
@@ -71,10 +69,8 @@ void learn_positive (Row &t, Formula &varphi) {
   for (Row f : negativeF)
     if (f >= t) {
       guard[f] = min(t, guard[f]);
-      if (guard[f] == f) {
-	cerr << "+++ negative example present in Horn closure of T" << endl;
-	throw;
-      }
+      if (guard[f] == f)
+	throw runtime_error("+++ negative example present in Horn closure of T");
     }
   const Matrix X = {t};
   for (Clause c : varphi) {
