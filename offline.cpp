@@ -31,8 +31,11 @@ void read_input () {
 Formula learn_horn_formula () {
   Formula varphi;
   for (Row f : negativeF) {
-    if (in_horn_closure(f, positiveT))
-      throw runtime_error("+++ negative example present in Horn closure of T");
+    if (in_horn_closure(f, positiveT)) {
+      cerr << "+++ negative example present in Horn closure of T" << endl;
+      exit(2);
+    }
+
     Clause c;
     for (int i = 0; i < arity; ++i) {
       Sign sign = f[i] > 0 ? lneg : lnone;
