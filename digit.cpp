@@ -9,7 +9,7 @@ ifstream infile;
 ofstream outfile;
 
 int main (int argc, char **argv) {
-  system("unxz --keep --force digit.csv.xz");
+  size_t dummy = system("unxz --keep --force digit.csv.xz");
   cerr << "Which digit (0-9) do you want to recognize? ";
   int digit;
   cin >> digit;
@@ -38,7 +38,7 @@ int main (int argc, char **argv) {
 
   infile.close();
   outfile.close();
-  system("rm -f digit.csv");
+  dummy = system("rm -f digit.csv");
   cerr << "CSV file " << filename << " generated" << endl;
 }
 
