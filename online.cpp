@@ -72,15 +72,10 @@ void learn_positive (Row &t, Formula &varphi) {
   for (Row f : negativeF)
     if (f >= t) {
       guard[f] = min(t, guard[f]);
-<<<<<<< HEAD
-      if (guard[f] == f)
-	throw runtime_error("+++ negative example present in Horn closure of T");
-=======
       if (guard[f] == f) {
 	cerr << "+++ negative example present in Horn closure of T" << endl;
 	exit(2);
       }
->>>>>>> 4883708 (Simple exit instead of throw when a negative example is present in the Horn closure of positive examples)
     }
   const Matrix X = {t};
   for (Clause c : varphi) {
