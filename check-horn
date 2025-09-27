@@ -1,0 +1,135 @@
+#!/usr/bin/python3
+
+import sys, random, os
+
+def read_observations(fn):
+    T = set()
+    F = set()
+    nvars = None
+    V = set()
+    with open(fn) as f:
+        for line in f.readlines():
+            status, *obs = [ v.strip() for v in line.strip().split(",") ]
+            if V:
+                assert len(obs) == nvars
+            else:
+                nvars = len(obs)
+                if status:
+                    V = {f"x{i}":i for i in range(nvars)}
+                else:
+                    V = { v:i for i,v in enumerate(obs) }
+                    continue
+            obs = tuple(int(v) for v in obs)
+            if status=="1":
+                T.add(obs)
+            else:
+                F.add(obs)
+    return V, T, F
+
+def line2clause(line,variables):
+    clause = []
+    for literal in line[4:-2].split(" + "):
+        var_op,val = literal.split("=")
+        var = var_op[:-1]
+        op = var_op[-1] == ">"
+        if var not in variables:
+            variables[var] = len(variables)
+        clause.append((variables[var],op,int(val)))
+    return tuple(clause)
+
+def read_clauses(fn, variables={}):
+    clauses = None
+    nvars = len(variables)
+    with open(fn) as f:
+        for line in f.readlines():
+            if line.startswith("\t  ("):
+                clauses = {line2clause(line,variables)}
+            elif line.startswith("\t* ("):
+                clauses.add(line2clause(line,variables))
+    return clauses
+
+def is_horn_c(c):
+    npos = 0
+    for _,geq,_ in c:
+        if geq:
+            npos += 1
+    return npos <= 1
+
+def is_horn(cs):
+    return all(is_horn_c(c) for c in cs)
+
+def o_satisfies_c(o, c):
+    return any(o[var]>=val if geq else o[var]<=val for var,geq,val in c)
+
+def o_satisfies_cs(o, cs):
+    return all(o_satisfies_c(o,c) for c in cs)
+
+def os_satisfy_c(os, c):
+    return all(o_satisfies_c(o,c) for o in os)
+
+def os_satisfy_cs(os, cs):
+    return all(o_satisfies_cs(o,cs) for o in os)
+
+def tuple_min(o1,o2):
+    return tuple(min(i,j) for i,j in zip(o1,o2))
+
+def tuple_max(o1,o2):
+    return tuple(max(i,j) for i,j in zip(o1,o2))
+
+def tuple_le(o1,o2):
+    return all(i<=j for i,j in zip(o1,o2))
+
+def in_horn_closure(f, T):
+    assert len(T) > 0
+    m = None
+    for t in T:
+        if tuple_le(f,t):
+            if not m:
+                m = t
+            else:
+                m = tuple_min(m,t)
+    return f == m
+
+def is_horn_solvable(F, T):
+    return all(not in_horn_closure(f,T) for f in F)
+
+def check(fn):
+    V,T,F = read_observations(f"{fn}.csv")
+    C = read_clauses(f"{fn}.log",V)
+
+    if not C:
+        if not T and not F:
+            print("C, T, F are all empty, which seems to be ok, sort of.")
+            return 0
+        if is_horn_solvable(F,T):
+            print(f"Problem is Horn, but no formula generated.")
+            return 1
+        print(f"The problem is not Horn, so generating no clauses is exactly the right thing to do. Congrats.")
+        return 0
+
+    if not is_horn(C):
+        print(f"The generated formula is not Horn.")
+        return 1
+
+    i2v = { i:v for v,i in V.items() }
+    for o in T:
+        for c in C:
+            if not o_satisfies_c(o,c):
+                print(f"*** {fn}: T-interpretation does not satisfy clause ***")
+                print(f"1,{','.join([str(i) for i in o])}")
+                print(" + ".join([
+                    f"{i2v[var]} {'>' if geq else '<'}= {val}" for var,geq,val in c
+                ]))
+                return 1
+
+    for o in F:
+        if o_satisfies_cs(o,C):
+            print(f"*** {fn}: F-interpretation satisfies all clauses ***")
+            print(f"0,{','.join([str(i) for i in o])}")
+            return 1
+        
+    print(f"The generated formula is Horn, satisfied by all T- and falsified by all F-interpretations. Congrats.")
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(check(sys.argv[1]))

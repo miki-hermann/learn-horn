@@ -1,83 +1,59 @@
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <set>
-#include "matrix+formula.hpp"
+#include <iomanip>
+#include <chrono>
 #include "common.hpp"
 
-using namespace std;
-
-void read_input () {
-  string line;
-  while (getline(cin, line)) {
-    Row m = split(line, delim);
-    unsigned example = m.front();
-    m.pop_front();
-    for (int i = 0; i < m.size(); ++i)
-      DCARD = max(DCARD, m[i]+1);
-    if (arity == 0)
-      arity = m.size();
-    if (example > 1) {
-      cerr << "+++ '" << line << "'" << endl;
-      cerr << "+++ leading indicator not 0 or 1; example dropped" << endl;
-    } else if (arity != m.size()) {
-      cerr << "+++ '" << line << "'" << endl;
-      cerr << "+++ arity discrepancy; example dropped" << endl;
-    } else if (example == 0)
-      negativeF.insert(m);
-    else if (example == 1)
-      positiveT.insert(m);
-  }
-}
-
-Formula learn_horn_formula () {
-  Formula varphi;
-  for (Row f : negativeF) {
-    if (in_horn_closure(f, positiveT)) {
-      cerr << "+++ negative example present in Horn closure of T" << endl;
-      cerr << "+++ the negative culprit is '" << f << "'" << endl;
-      exit(2);
-    }
-    Clause c;
-    for (int i = 0; i < arity; ++i) {
-      Sign sign = f[i] > 0 ? lneg : lnone;
-      unsigned val = f[i] > 0 ? f[i]-1 : 0;
-      Literal lit(sign, 0, val);
-      c.push_back(lit);
-    }
-    if (positiveT |= c)
-      // varphi.push_back(c);
-      varphi.insert(c);
-    else {
-      bool eliminated = false;
-      int i = 0;
-      while (!eliminated) {
-	if (f[i] < DCARD-1) {
-	  Clause newc = c;
-	  newc[i].sign = (Sign) (c[i].sign | lpos);
-	  newc[i].pval = f[i]+1;
-	  if (positiveT |= newc) {
-	    // varphi.push_back(newc);
-	    varphi.insert(newc);
-	    eliminated = true;
-	  }
-	}
-	i++;
+void readSamples(const std::string& filename, TupleList& F, TupleList& T) {
+  SampleStream stream(filename);
+  while (auto sample = stream.next()) {
+    switch (sample->type) {
+      case NEGATIVE: {
+        F.push_back(sample->tuple);
       }
+        break;
+      case POSITIVE: {
+        T.push_back(sample->tuple);
+      }
+        break;
     }
   }
-  return varphi;
 }
 
-int main (int argc, char **argv) {
-  read_arg(argc, argv);
-  string command = argv[0];
-  adjust_and_open(command);
-  read_input();
-  Formula varphi = learn_horn_formula();
-  cout << to_string(varphi) << endl;
-  if (!latex.empty())
-    latexfile << to_latex(varphi) << endl;
+Formula learn_horn_offline(const TupleList& F, const TupleList& T) {
+  Formula formula;
+  for (const auto& f : F) {
+    Clause clause = new_clause(f, T);
+    formula.push_back(clause);
+    if (clause.pivot == arity) {
+      throw std::runtime_error("problem unsolvable");
+    }
+  }
+  return formula;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+int main(int argc, char* argv[]) {
+  if (argc != 2) {
+    std::cerr << "Usage: " << argv[0] << " inputfile" << std::endl;
+    return 1;
+  }
+  std::string filename = argv[1];
+  
+  TupleList F;
+  TupleList T;
+  readSamples(filename, F, T);
+   
+  try {
+    auto start = std::chrono::high_resolution_clock::now();
+    Formula formula = learn_horn_offline(F, T);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << to_string(formula);
+    std::chrono::duration<double> elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cerr << std::setw(13) << std::left << filename << ": "
+              << std::fixed << std::setprecision(3) <<std::setw(6) << std::right
+              << elapsed.count() << " seconds" << std::endl;
+    return 0;
+  } catch (const std::exception& ex) {
+    std::cerr << ex.what() << std::endl;
+    return 2;
+  }
+}

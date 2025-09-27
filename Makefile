@@ -1,48 +1,42 @@
-.PHONY: compile offline online horn-closure install clean scratch example
+.PHONY: compile offline online \
+	install clean scratch zip
 
-compile: offline online horn-closure example
+# FLAGS := -O4 -march=native -flto -fopenmp -Wfatal-errors
+FLAGS := -O4 -march=native -flto -Wfatal-errors
+# CXX := g++
+EXECUTABLES := /usr/local/bin
+SUDO := sudo
 
-offline: matrix+formula.o common.o offline.o
-	g++ -O4 -o offline-horn offline.o common.o matrix+formula.o
+compile: offline online
 
-offline.o: matrix+formula.hpp common.hpp offline.cpp
-	g++ -O4 -c -o offline.o offline.cpp
+common.o: common.cpp common.hpp
+	$(CXX) $(FLAGS) -c -o common.o common.cpp
 
-online: matrix+formula.o common.o online.o
-	g++ -O4 -o online-horn online.o common.o matrix+formula.o
+offline.o: common.hpp offline.cpp
+	$(CXX) $(FLAGS) -c -o offline.o offline.cpp
 
-online.o: matrix+formula.hpp common.hpp online.cpp
-	g++ -O4 -c -o online.o online.cpp
+offline: common.o offline.o
+	$(CXX) $(FLAGS) -o offline offline.o common.o
 
-horn-closure: matrix+formula.o common.o horn-closure.o
-	g++ -O4 -o horn-closure-v1 horn-closure-v1.o common.o matrix+formula.o
-	g++ -O4 -o horn-closure-v2 horn-closure-v2.o common.o matrix+formula.o
+online.o: common.hpp online.cpp
+	$(CXX) $(FLAGS) -c -o online.o online.cpp
 
-horn-closure.o: matrix+formula.hpp common.hpp horn-closure-v1.cpp  horn-closure-v2.cpp
-	g++ -O4 -c -o horn-closure-v1.o horn-closure-v1.cpp
-	g++ -O4 -c -o horn-closure-v2.o horn-closure-v2.cpp
-
-common.o: common.hpp common.cpp
-	g++ -O4 -c -o common.o common.cpp
-
-matrix+formula.o: matrix+formula.hpp matrix+formula.cpp
-	g++ -O4 -c -o matrix+formula.o matrix+formula.cpp
-
-example: digit.cpp digit.csv.xz
-	g++ -O4 -o digit digit.cpp
+online: common.o online.o
+	$(CXX) $(FLAGS) -o online online.o common.o
 
 clean:
 	rm -f *.o
 	rm -f *~
 
 scratch: clean
-	rm -f offline-horn online-horn
-	rm -f horn-closure-v1 horn-closure-v2
-	rm -f *.tex
-	rm -f digit digit[0-9].csv
+	rm -f offline online
+	rm -f *.zip
 
 install:
-	sudo mkdir -p /usr/local/bin
-	sudo cp -f offline-horn online-horn /usr/local/bin
-	sudo cp -f horn-closure-v1 horn-closure-v2 /usr/local/bin
-	sudo cp -f digit /usr/local/bin
+	$(SUDO) mkdir -p $(EXECUTABLES)
+	-$(SUDO) cp -f online $(EXECUTABLES)/offline-horn
+	-$(SUDO) cp -f online $(EXECUTABLES)/online-horn
+
+zip: common.cpp common.hpp offline.cpp online.cpp \
+	*.csv test.sh README.md Makefile check-horn
+	zip -r learn-horn.zip *.cpp *.hpp *.csv test.sh README.md Makefile check-horn

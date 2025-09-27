@@ -1,4 +1,4 @@
-# Learn Horn formulas
+# Learning Horn formulas
 				   
 ## Table of contents
 
@@ -9,41 +9,22 @@
 
 ## Brief Description
 
-This C++ software contains the online and offline versions of Horn
-learning algorithm, as well as the algorithm for constructing the Horn
-closure of a set of vectors.
-
-Both learning algorithms produce the learned Horn formula from
-positive and negative examples. Each example is a vectors of positive
-integer values separated by commas, preceded by an indicator (first
-value on the line). The leading indicator is 0 for a negative example
-and 1 for a positive example.
-
-Detailed description of the algorithms together with the syntax of
-produced formulas is in the file `paper.pdf`.
+The  C++  programs  implement  the  online and offline versions of the
+algorithm  for  learning  a  Horn  formula  from positive and negative
+samples.   Each sample is a tuple of positive integer values separated
+by commas,  preceded  by an indicator (first value on the line).   The indicator is 0 for a negative and 1 for a positive sample.
 
 ### Invocation
 
-Both offline, online, and Horn closure algorithms are invoked by the
-following commands:
+The offline and online algorithms are invoked by the commands
 
-	offline-horn    [-i <input file>] [-o <output file>] [-l <latex-output-file>]
-	horn-closure-v1 [-i <input file>] [-o <output file>]
-	horn-closure-v2 [-i <input file>] [-o <output file>]
+	./offline <csv-file>
+	./online  <csv-file>
 
-and
-
-	online-horn -c <domain cardinality> [-i <input file>] [-o <output file>] [-l <latex-output-file>]
-
-Both offline and online algorithms also accept the input from from
-STDIN and print the output on STDOUT by default, if the options `-i`
-or `-o` are not specified. If the user requires output in LaTeX form,
-it can be done using the `-l` option followed by the target
-filename. The option `-c` specifies the domain cardinality, but it is
-necessary only for the online version.
-
-There exist two versions of the Horn closure algorithm. The actual
-algorithm described in the paper is the version horn-closure-v2.
+To run both algorithms on all csv files, run the command
+```bash
+bash test.sh
+```
 
 ## Compilation and Installation
 * [Compilation](#compilation)
@@ -52,45 +33,50 @@ algorithm described in the paper is the version horn-closure-v2.
 ### Compilation
 
 A C++ compiler satisfying at least the C++11 revision is necessary to
-successfully compile the algorithms. Only the standard library is
-used, therefore there is no need to install any additional C++
-libraries.  The g++ GNU Project compiler is used in the `Makefile`. If
-you have a different compiler, please modify the `Makefile` according
-to your installation.
+successfully compile the algorithms. Only the standard C++ library is
+used.  The g++ GNU Project compiler is used in the `Makefile`. If you
+have a different compiler, please modify the *CXX* variable in the
+`Makefile` according to your installation.
 
 ### Execution
 
-To compile the algorithm, write the command
+To build the executables, use the command
 ```Makefile
    make
 ```
-in the root directory. You can also compile only one part of the
-algorithms, using the command `make offline`, `make online`, or `make
-horn-closure`.
+in the root directory. You can also compile just one of the algorithms
+via `make offline` or `make online`.
 
-To install the algorithms, write the command
+To install the executables, use the command
 ```Makefile
    make install
 ```
-This command installs the executables in the directory
-`/usr/local/bin`. You need to have superuser priviledges to execute
-this command.
+This will rename the executables to `offline-horn` and `online-horn`, respectively, and copy them to the directory `/usr/local/bin`. You
+need superuser priviledges to write to this folder. For installing
+the binaries elsewhere, modify the *EXECUTABLES* variable accordingly.
+If you have write permission and do not need the `sudo` command,
+change the *SUDO* variable.
 
 ## Examples
 
-The distribution also contains CSV files with examples. The test files
-`test[1-3].csv` contain small examples designated to test if the
-algorithms run correctly and also serve as examples how to write the
-input.
+The distribution also contains sample data in the following CSV files.
 
-There is another, much more sophisticated example from `kaggle`
-present, but it needs some preprocessing. The file `digit.csv.xz`
-contains compressed data for recognition of digits.
+ - **accent-fr.csv**  (identifying English speaker with French accent)
+ - **banknotes.csv**  (identifying forged banknotes)
+ - **cancer.csv**     (identifying malignant tumors in breast cancer Wisconsin example)
+ - **graph.csv**      (DSAA 2023 competition example)
+ - **graphFT.csv**    (sorted **graph.csv** example, negative samples first)
+ - **graphTF.csv**    (sorted **graph.csv** example, positive samples first)
+ - **mushroom.csv**   (identifying edible mushrooms)
+ - **shuttle.csv**    (identifying a bypass for the shuttle)
 
-Compile the digit treatment by `make example`, then run the command
-`digit`. This command will ask you to choose the digit `d` which you
-want to recognize. The software produces a CSV file `digitd.csv` for
-the chosen digit `d`. Use it as input for the algorithms.
+To run both algorithms on all CSV files, use the command
 
+```bash
+bash test.sh
+```
+
+Optionally, you can let the script check the output of the algorithms
+using the Python program `check-horn`. This may take some time.
 
 EOF
